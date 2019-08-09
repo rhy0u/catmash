@@ -1,0 +1,6 @@
+{
+  "server": {
+    "externalUrl": "http://locahost:8080",
+    "graphql": { "playground": true }
+  }
+}
