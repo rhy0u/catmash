@@ -1,7 +1,6 @@
 import { connect as connectDatabase } from 'server/services/database'
 import { truncateAll } from 'server/utils/database'
-
-// import * as catsSeeds from './data/cats'
+import * as catsSeeds from './data/cats'
 
 export async function seed(knex) {
   if (
@@ -14,6 +13,7 @@ export async function seed(knex) {
   const originalDestroy = knex.destroy
   knex.destroy = () => {}
   await truncateAll(knex)
+  await catsSeeds.generate()
   knex.destroy = originalDestroy
   connectDatabase()
 }

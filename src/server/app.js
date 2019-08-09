@@ -11,7 +11,7 @@ import path from 'path'
 
 const app = express()
 
-app.use(cors({ origin: 'http://localhost:8080', credentials: true }))
+app.use(cors())
 app.use(morgan('dev'))
 app.use(express.static(path.resolve(__dirname, '../../public')))
 

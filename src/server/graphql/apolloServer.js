@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-express'
 import { execute, validate } from 'graphql'
 import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date'
 import config from 'server/config'
-import * as Cats from './types/Cats'
+import * as Cat from './types/Cat'
 
 const baseSchema = /* GraphQL */ `
   scalar Date
@@ -46,7 +46,7 @@ const buildSchema = (...types) =>
     },
   })
 
-const server = buildSchema(Cats)
+const server = buildSchema(Cat)
 
 export const run = async (query, { variables = {}, context = {} } = {}) => {
   const validationErrors = validate(server.schema, query)

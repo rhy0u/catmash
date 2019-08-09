@@ -53,11 +53,11 @@ export default {
   ...(development
     ? {
         devServer: {
-          host: '0.0.0.0',
           hot: true,
           contentBase: DIST_PATH,
           publicPath: '/dist/',
           proxy: { '*': { target: 'http://localhost:8000' } },
+          open: true,
         },
       }
     : {}),
