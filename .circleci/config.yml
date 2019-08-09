@@ -1,0 +1,56 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12
+      - image: circleci/postgres:11.3-alpine
+        environment:
+          - POSTGRES_USER: postgres
+          - POSTGRES_DB: test
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v2-dependencies-
+
+      - run:
+          name: Installing Dependencies
+          command: |
+            yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v2-dependencies-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Load database schema
+          command: NODE_ENV=test yarn db:migrate
+
+      - run:
+          name: Lint code
+          command: yarn lint
+
+      - run:
+          name: Build
+          command: yarn build
+
+      - run:
+          name: Run tests
+          command: |
+            yarn test --ci
