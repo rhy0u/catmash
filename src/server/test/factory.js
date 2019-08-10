@@ -7,7 +7,6 @@ factory.setAdapter(new ObjectionAdapter())
 factory.define('cat', Cat, {
   id: factory.chance('word'),
   score: factory.chance('integer', { min: 0, max: 5000 }),
-  photoUrl: factory.chance('word'),
 })
 
 export default factory
