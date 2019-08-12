@@ -6,7 +6,7 @@ import * as routePaths from 'client/utils/routePaths'
 const App = () => {
   return (
     <Switch>
-      <Route path={routePaths.home()} component={routes.Home} />
+      <Route exact path={routePaths.home()} component={routes.Home} />
       <Route path={routePaths.ranking()} component={routes.Ranking} />
     </Switch>
   )

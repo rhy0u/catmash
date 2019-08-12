@@ -19,7 +19,7 @@ export const schema = /* GraphQL */ `
 `
 export const resolvers = {
   Query: {
-    cats: async () => Cat.query(),
+    cats: async () => Cat.query().orderBy('score', 'desc'),
   },
   Mutation: {
     updateCatScore: async (object, { looserId, winnerId }) => {

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import cats from 'client/utils/cats'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { gql } from 'apollo-boost'
 import { useMutation } from '@apollo/react-hooks'
+import * as routePaths from 'client/utils/routePaths'
+import cats from 'client/utils/cats'
+import CatCard from 'client/components/CatCard'
 
 const UPDATE_CAT_SCORE = gql`
   mutation UpdateCatScore($winnerId: ID!, $looserId: ID!) {
@@ -19,28 +22,27 @@ const Cats = styled.div`
   justify-content: space-around;
   align-items: center;
 `
+
+const RankingLink = styled.div`
+  display: flex;
+  justify-content: center;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+`
+
 const Title = styled.h1`
   text-align: center;
 `
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 `
 
-const CatImage = styled.div`
-  border-radius: 25%;
-  border: 15px solid blue;
-  height: 400px;
-  width: 400px;
-  background: center / cover no-repeat ${p => `url(${p.imageUrl})`};
-`
-
 const getRandom = max => Math.floor(Math.random() * max)
-
-const Cat = ({ cat, onClick }) => {
-  return <CatImage imageUrl={cat.url} onClick={onClick} />
-}
 
 const Home = () => {
   const [updateCatScore] = useMutation(UPDATE_CAT_SCORE)
@@ -52,7 +54,7 @@ const Home = () => {
     <Wrapper>
       <Title>Votez pour le chat le plus mignon !</Title>
       <Cats>
-        <Cat
+        <CatCard
           cat={leftCat}
           onClick={async () => {
             await updateCatScore({
@@ -62,7 +64,7 @@ const Home = () => {
             setRightCat(cats[getRandom(cats.length)])
           }}
         />
-        <Cat
+        <CatCard
           cat={rightCat}
           onClick={async () => {
             await updateCatScore({
@@ -73,6 +75,9 @@ const Home = () => {
           }}
         />
       </Cats>
+      <RankingLink>
+        <Link to={routePaths.ranking()}>See the ranking</Link>
+      </RankingLink>
     </Wrapper>
   )
 }
