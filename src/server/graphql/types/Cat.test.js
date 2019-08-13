@@ -19,4 +19,22 @@ describe('Cat', () => {
 
     expect(cats).toHaveLength(2)
   })
+
+  it('should update a cat score', async () => {
+    const {
+      updateCatScore: [nala, tao],
+    } = await run(
+      gql`
+        mutation UpdateCatScore($winnerId: ID!, $looserId: ID!) {
+          updateCatScore(winnerId: $winnerId, looserId: $looserId) {
+            id
+            score
+          }
+        }
+      `,
+      { variables: { winnerId: 'Nala', looserId: 'Tao' } },
+    )
+
+    expect(nala.score > tao.score).toBe(true)
+  })
 })
